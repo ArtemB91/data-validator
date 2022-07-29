@@ -8,12 +8,12 @@ public class StringSchema extends BaseSchema implements Schema {
     }
 
     public final StringSchema minLength(final int length) {
-        addCheck((v) -> ((String) v).length() >= length);
+        addCheck((v) -> v instanceof String && ((String) v).length() >= length);
         return this;
     }
 
     public final StringSchema contains(String content) {
-        addCheck((v) -> ((String) v).contains(content));
+        addCheck((v) -> v instanceof String && ((String) v).contains(content));
         return this;
     }
 
