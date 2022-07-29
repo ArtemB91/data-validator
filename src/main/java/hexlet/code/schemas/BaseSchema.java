@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BaseSchema implements Schema {
+public abstract class BaseSchema implements Schema {
 
     private final List<Predicate<Object>> checks = new ArrayList<>();
 
@@ -21,4 +21,5 @@ public class BaseSchema implements Schema {
         }
         return true;
     }
+
 }
