@@ -1,5 +1,5 @@
 run-dist:
-		./build/install/java-project-lvl3/bin/java-project-lvl3
+		./build/install/app/bin/app
 build:
 	./gradlew clean build
 report:
