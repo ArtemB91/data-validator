@@ -17,63 +17,56 @@ public class ValidatorTest {
     private static final int STRING_MIN_LENGTH_TEST = 5;
 
     @Test
-    void stringValid() {
+    void testString() {
         Validator v = new Validator();
-        StringSchema schema = v.string().required();
+        StringSchema schema = v.string();
+
+        assertTrue(schema.isValid(null));
+
+        schema.required();
 
         assertTrue(schema.isValid("word"));
         assertTrue(schema.isValid(" "));
-
-        schema.minLength(STRING_MIN_LENGTH_TEST);
-        assertTrue(schema.isValid("12345"));
-        assertTrue(schema.isValid("anotherWord"));
-
-        schema.contains("Word");
-        assertTrue(schema.isValid("firstWord"));
-        assertTrue(schema.isValid("secondWord"));
-
-    }
-
-    @Test
-    void stringNotValid() {
-        Validator v = new Validator();
-        StringSchema schema = v.string().required();
-
         assertFalse(schema.isValid(null));
         assertFalse(schema.isValid(""));
 
-        schema.minLength(STRING_MIN_LENGTH_TEST); // according to checkstyle "magic number" check :(
+        schema.minLength(STRING_MIN_LENGTH_TEST);
+
+        assertTrue(schema.isValid("12345"));
+        assertTrue(schema.isValid("anotherWord"));
         assertFalse(schema.isValid("1234"));
         assertFalse(schema.isValid("hi"));
 
-        schema.contains("word");
-        assertFalse(schema.isValid("firstWord"));
-        assertFalse(schema.isValid("secondWord"));
+        schema.contains("Word");
+
+        assertTrue(schema.isValid("firstWord"));
+        assertTrue(schema.isValid("secondWord"));
+        assertFalse(schema.isValid("firstword"));
+        assertFalse(schema.isValid("secondword"));
     }
 
     @Test
-    void numberAll() {
+    void testNumber() {
         Validator v = new Validator();
 
         NumberSchema schema = v.number();
 
-        assertTrue(schema.isValid(null)); // true
-
+        assertTrue(schema.isValid(null));
         schema.required();
 
-        assertFalse(schema.isValid(null)); // false
-        assertTrue(schema.isValid(10)); // true
-        schema.isValid("5"); // false
+        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(10));
+        schema.isValid("5");
 
-        assertTrue(schema.positive().isValid(10)); // true
-        schema.isValid(-10); // false
+        assertTrue(schema.positive().isValid(10));
+        schema.isValid(-10);
 
         schema.range(5, 10);
 
-        assertTrue(schema.isValid(5)); // true
-        assertTrue(schema.isValid(10)); // true
-        assertFalse(schema.isValid(4)); // false
-        assertFalse(schema.isValid(11)); // false
+        assertTrue(schema.isValid(5));
+        assertTrue(schema.isValid(10));
+        assertFalse(schema.isValid(4));
+        assertFalse(schema.isValid(11));
     }
 
     @Test
@@ -82,21 +75,21 @@ public class ValidatorTest {
 
         MapSchema schema = v.map();
 
-        assertTrue(schema.isValid(null)); // true
+        assertTrue(schema.isValid(null));
 
         schema.required();
 
-        assertFalse(schema.isValid(null)); // false
-        assertTrue(schema.isValid(new HashMap())); // true
+        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(new HashMap()));
         Map<String, String> data = new HashMap<>();
         data.put("key1", "value1");
-        assertTrue(schema.isValid(data)); // true
+        assertTrue(schema.isValid(data));
 
         schema.sizeof(2);
 
-        assertFalse(schema.isValid(data));  // false
+        assertFalse(schema.isValid(data));
         data.put("key2", "value2");
-        assertTrue(schema.isValid(data)); // true
+        assertTrue(schema.isValid(data));
     }
 
     @Test
@@ -113,21 +106,21 @@ public class ValidatorTest {
         Map<String, Object> human1 = new HashMap<>();
         human1.put("name", "Kolya");
         human1.put("age", 100);
-        assertTrue(schema.isValid(human1)); // true
+        assertTrue(schema.isValid(human1));
 
         Map<String, Object> human2 = new HashMap<>();
         human2.put("name", "Maya");
         human2.put("age", null);
-        assertFalse(schema.isValid(human2)); // true
+        assertFalse(schema.isValid(human2));
 
         Map<String, Object> human3 = new HashMap<>();
         human3.put("name", "");
         human3.put("age", null);
-        assertFalse(schema.isValid(human3)); // false
+        assertFalse(schema.isValid(human3));
 
         Map<String, Object> human4 = new HashMap<>();
         human4.put("name", "Valya");
         human4.put("age", -5);
-        assertFalse(schema.isValid(human4)); // false
+        assertFalse(schema.isValid(human4));
     }
 }
