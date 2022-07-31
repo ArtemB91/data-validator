@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class StringSchema extends BaseSchema implements Schema {
+public class StringSchema extends BaseSchema {
 
     public final StringSchema required() {
         addCheck((v) -> v instanceof String && !((String) v).isEmpty());

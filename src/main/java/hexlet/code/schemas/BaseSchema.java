@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class BaseSchema implements Schema {
+public abstract class BaseSchema {
 
     private final List<Predicate<Object>> checks = new ArrayList<>();
 
@@ -12,7 +12,6 @@ public abstract class BaseSchema implements Schema {
         checks.add(predicate);
     }
 
-    @Override
     public final boolean isValid(Object value) {
         for (Predicate<Object> check: checks) {
             if (!check.test(value)) {
